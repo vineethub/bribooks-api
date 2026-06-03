@@ -15,4 +15,14 @@ class BookService
             'status' => 'draft'
         ]);
     }
+
+    public function update(Book $book, array $data)
+    {
+        $book->update([
+            'title' => $data['title'] ?? $book->title,
+            'description' => $data['description'] ?? $book->description,
+        ]);
+
+        return $book;
+    }
 }

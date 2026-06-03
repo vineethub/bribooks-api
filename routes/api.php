@@ -10,6 +10,14 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/books', [BookController::class, 'store']);
+
+
+    Route::prefix('books')->controller(BookController::class)->group(function () {
+        Route::post('/', 'store');
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
 
 });
