@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\BookService;
 use App\Models\Book;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Models\BookVersion;
 
 class BookController extends Controller
 {
@@ -106,5 +107,34 @@ class BookController extends Controller
         $book = $this->bookService->reject($book, auth()->user());
 
         return response()->json($book);
+    }
+
+    public function versions(Book $book)
+    {
+        $this->authorize('view', $book);
+
+        $versions = BookVersion::with('creator')
+            ->where('book_id', $book->id)
+            ->orderBy('version_number', 'desc')
+            ->get();
+
+        return response()->json([
+            'book_id' => $book->id,
+            'total_versions' => $versions->count(),
+            'data' => $versions
+        ]);
+    }
+
+    public function showVersion(Book $book, $versionId)
+    {
+        $this->authorize('view', $book);
+
+        $version = BookVersion::where('book_id', $book->id)
+            ->where('id', $versionId)
+            ->firstOrFail();
+
+        return response()->json([
+            'data' => $version
+        ]);
     }
 }

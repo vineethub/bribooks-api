@@ -22,6 +22,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{book}/approve', 'approve');
         Route::post('/{book}/publish', 'publish');
         Route::post('/{book}/reject', 'reject');
+        Route::get('/{book}/versions', 'versions');
+        Route::get('/{book}/versions/{version}','showVersion');
     });
 
 });

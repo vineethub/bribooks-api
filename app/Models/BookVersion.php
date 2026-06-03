@@ -14,4 +14,9 @@ class BookVersion extends Model
         'snapshot_json',
         'created_by'
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
