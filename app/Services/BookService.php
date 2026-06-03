@@ -5,7 +5,12 @@ namespace App\Services;
 use App\Models\Book;
 use App\Enums\BookStatus;
 use App\Services\BookVersionService;
+
+use App\Events\BookCreated;
+use App\Events\BookVersionCreated;
 use App\Events\BookSubmitted;
+use App\Events\BookApproved;
+use App\Events\BookPublished;
 class BookService
 {
 
@@ -16,18 +21,24 @@ class BookService
     }
     public function create(array $data, $user)
     {
-        return Book::create([
+        $book = Book::create([
             'author_id' => $user->id,
             'title' => $data['title'],
             'description' => $data['description'] ?? null,
             'status' => 'draft'
         ]);
+
+        event(new BookCreated($book));
+
+       return $book;
     }
 
     public function update(Book $book, array $data, $user)
     {
         app(BookVersionService::class)
             ->createSnapshot($book, $user);
+
+        event(new BookVersionCreated($book));
 
         $book->update([
             'title' => $data['title'] ?? $book->title,
@@ -70,6 +81,8 @@ class BookService
             'status' => BookStatus::APPROVED
         ]);
 
+        event(new BookApproved($book));
+
         return $book;
     }
 
@@ -86,6 +99,8 @@ class BookService
         $book->update([
             'status' => BookStatus::PUBLISHED
         ]);
+
+        event(new BookPublished($book));
 
         return $book;
     }

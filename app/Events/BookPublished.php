@@ -10,8 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Book;
-
-class BookSubmitted
+class BookPublished
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,7 +19,7 @@ class BookSubmitted
      */
     public function __construct(public Book $book)
     {
-
+        //
     }
 
     /**
