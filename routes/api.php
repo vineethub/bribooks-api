@@ -18,6 +18,10 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{book}', 'show');
         Route::put('/{book}', 'update');
         Route::delete('/{book}', 'destroy');
+        Route::post('/{book}/submit', 'submit');
+        Route::post('/{book}/approve', 'approve');
+        Route::post('/{book}/publish', 'publish');
+        Route::post('/{book}/reject', 'reject');
     });
 
 });

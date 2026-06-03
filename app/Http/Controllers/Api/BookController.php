@@ -79,4 +79,32 @@ class BookController extends Controller
             'message' => 'Book deleted successfully'
         ]);
     }
+
+    public function submit(Book $book)
+    {
+        $book = $this->bookService->submit($book, auth()->user());
+
+        return response()->json($book);
+    }
+
+    public function approve(Book $book)
+    {
+        $book = $this->bookService->approve($book, auth()->user());
+
+        return response()->json($book);
+    }
+
+    public function publish(Book $book)
+    {
+        $book = $this->bookService->publish($book, auth()->user());
+
+        return response()->json($book);
+    }
+
+    public function reject(Book $book)
+    {
+        $book = $this->bookService->reject($book, auth()->user());
+
+        return response()->json($book);
+    }
 }
