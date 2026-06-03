@@ -43,4 +43,20 @@ class AuthController extends Controller
             'token' => $result['token']
         ]);
     }
+
+    public function profile()
+    {
+        return response()->json([
+            'user' => auth()->user()
+        ]);
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ]);
+    }
 }
