@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\BookService;
 use App\Models\Book;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class BookController extends Controller
 {
+    use AuthorizesRequests;
     protected $bookService;
 
     public function __construct(BookService $bookService)
@@ -40,39 +42,24 @@ class BookController extends Controller
             ->where('author_id', auth()->id())
             ->latest()
             ->get();
-
-        return response()->json($books);
-    }
-
-    public function show($id)
-    {
-        $book = Book::with('author')
-            ->where('author_id', auth()->id())
-            ->where('id', $id)
-            ->first();
-
-        if (!$book) {
-            return response()->json([
-                'message' => 'Book not found or access denied'
-            ], 404);
-        }
-
+    
         return response()->json([
-            'data' => $book
+            'data' => $books
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function show(Book $book)
     {
-        $book = Book::where('author_id', auth()->id())
-            ->where('id', $id)
-            ->first();
+        $this->authorize('view', $book);
 
-        if (!$book) {
-            return response()->json([
-                'message' => 'Book not found or access denied'
-            ], 404);
-        }
+        return response()->json([
+            'data' => $book->load('author')
+        ]);
+    }
+
+    public function update(Request $request, Book $book)
+    {
+        $this->authorize('update', $book);
 
         $book = $this->bookService->update($book, $request->all());
 
@@ -82,17 +69,9 @@ class BookController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        $book = Book::where('author_id', auth()->id())
-            ->where('id', $id)
-            ->first();
-
-        if (!$book) {
-            return response()->json([
-                'message' => 'Book not found or access denied'
-            ], 404);
-        }
+        $this->authorize('delete', $book);
 
         $book->delete();
 
