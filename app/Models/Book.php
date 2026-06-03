@@ -26,4 +26,9 @@ class Book extends Model
     {
         return $this->belongsTo(User::class, 'author_id');
     }
+
+    public function versions()
+    {
+        return $this->hasMany(BookVersion::class);
+    }
 }

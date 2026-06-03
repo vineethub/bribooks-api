@@ -61,7 +61,7 @@ class BookController extends Controller
     {
         $this->authorize('update', $book);
 
-        $book = $this->bookService->update($book, $request->all());
+        $book = $this->bookService->update($book, $request->all(),auth()->user());
 
         return response()->json([
             'message' => 'Book updated successfully',

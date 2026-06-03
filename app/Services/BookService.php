@@ -4,8 +4,15 @@ namespace App\Services;
 
 use App\Models\Book;
 use App\Enums\BookStatus;
+use App\Services\BookVersionService;
 class BookService
 {
+
+    protected $versionService;
+    public function __construct(BookVersionService $versionService)
+    {
+        $this->versionService = $versionService;
+    }
     public function create(array $data, $user)
     {
         return Book::create([
@@ -16,8 +23,11 @@ class BookService
         ]);
     }
 
-    public function update(Book $book, array $data)
+    public function update(Book $book, array $data, $user)
     {
+        app(BookVersionService::class)
+            ->createSnapshot($book, $user);
+
         $book->update([
             'title' => $data['title'] ?? $book->title,
             'description' => $data['description'] ?? $book->description,
