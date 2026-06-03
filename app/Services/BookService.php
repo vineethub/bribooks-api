@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Book;
 use App\Enums\BookStatus;
 use App\Services\BookVersionService;
+use App\Events\BookSubmitted;
 class BookService
 {
 
@@ -49,6 +50,8 @@ class BookService
         $book->update([
             'status' => BookStatus::SUBMITTED
         ]);
+
+        event(new BookSubmitted($book));
 
         return $book;
     }
