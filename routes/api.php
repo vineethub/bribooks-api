@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\ChapterController;
 use App\Http\Controllers\Api\PageController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\UploadController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -43,5 +44,9 @@ Route::middleware('auth:api')->group(function () {
 
         // dashboard API
         Route::get('/dashboard', [DashboardController::class, 'index']);
+
+        // upload API
+        Route::post('/books/{id}/upload',[UploadController::class, 'upload']
+        );
 
 });
