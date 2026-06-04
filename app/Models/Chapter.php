@@ -16,4 +16,9 @@ class Chapter extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
+    public function pages()
+    {
+        return $this->hasMany(Page::class);
+    }
 }
