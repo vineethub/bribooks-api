@@ -1,58 +1,313 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BriBooks Mini Book Writing Platform API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+This project is a simplified backend implementation of the BriBooks Book Writing and Publishing Platform built using Laravel 13.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The system allows authors to create books, manage chapters and pages, upload manuscripts, create book versions, submit books for review, and publish approved books through a role-based workflow.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack
 
-## Learning Laravel
+* PHP 8.3+
+* Laravel 13
+* MySQL 8+
+* JWT Authentication (tymon/jwt-auth)
+* PhpOffice/PhpWord
+* PHPUnit
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Features
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### Authentication
 
-## Agentic Development
+* User Registration
+* User Login
+* User Profile
+* User Logout
+* JWT Token Authentication
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Role-Based Access Control
+
+Supported Roles:
+
+* Author
+* Reviewer
+* Admin
+
+### Book Management
+
+* Create Book
+* List Books
+* View Book Details
+* Update Book
+* Delete Book
+
+### Book Version Control
+
+* Create Version Snapshots
+* View Version History
+* View Specific Version
+
+Version snapshots store:
+
+* Book Metadata
+* Chapters
+* Pages
+
+### Chapter Management
+
+* Create Chapter
+* Update Chapter
+* Delete Chapter
+* List Chapters
+
+### Page Management
+
+* Create Page
+* Update Page
+* Delete Page
+* List Pages
+
+### Review & Publishing Workflow
+
+Workflow:
+
+Draft → Submitted → Under Review → Approved → Published
+
+Actions:
+
+* Submit Book
+* Approve Book
+* Reject Book
+* Publish Book
+
+### Moderation System
+
+When a book is submitted:
+
+* Restricted Words Detection
+* Moderation Logging
+* Automatic transition to Under Review when moderation passes
+
+### Document Upload & Conversion
+
+Supported Formats:
+
+* .doc
+* .docx
+
+Features:
+
+* Upload manuscript
+* Extract document content
+* Create chapter automatically
+* Convert content into HTML pages
+
+### Dashboard
+
+Provides:
+
+* Total Books
+* Draft Books
+* Published Books
+* Pending Reviews
+
+### Events & Listeners
+
+Implemented Events:
+
+* BookCreated
+* BookVersionCreated
+* BookSubmitted
+* ModerationPassed
+* BookApproved
+* BookPublished
+
+Implemented Listeners:
+
+* AnalyticsListener
+* ModerationListener
+* NotificationListener
+* BookApprovedListener
+* BookPublishedListener
+
+---
+
+## Project Architecture
+
+The project follows a layered architecture:
+
+* Controllers
+* Services
+* Models
+* Policies
+* Events
+* Listeners
+* Form Validation
+* Enums
+
+Example:
+
+Controller → Service → Model
+
+This approach improves maintainability, testability, and separation of concerns.
+
+---
+
+## Installation
+
+Clone repository:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <repository-url>
+cd bribooks-api
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Install dependencies:
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Copy environment file:
 
-## Code of Conduct
+```bash
+cp .env.example .env
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Generate application key:
 
-## Security Vulnerabilities
+```bash
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Generate JWT secret:
 
-## License
+```bash
+php artisan jwt:secret
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Configure database credentials in `.env`.
+
+Run migrations:
+
+```bash
+php artisan migrate
+```
+
+Start development server:
+
+```bash
+php artisan serve
+```
+
+---
+
+## Running Tests
+
+Run all tests:
+
+```bash
+php artisan test
+```
+
+Run a specific test:
+
+```bash
+php artisan test --filter=AuthTest
+```
+
+---
+
+## API Endpoints
+
+### Authentication
+
+| Method | Endpoint      |
+| ------ | ------------- |
+| POST   | /api/register |
+| POST   | /api/login    |
+| GET    | /api/profile  |
+| POST   | /api/logout   |
+
+### Books
+
+| Method | Endpoint        |
+| ------ | --------------- |
+| POST   | /api/books      |
+| GET    | /api/books      |
+| GET    | /api/books/{id} |
+| PUT    | /api/books/{id} |
+| DELETE | /api/books/{id} |
+
+### Chapters
+
+| Method | Endpoint                 |
+| ------ | ------------------------ |
+| POST   | /api/books/{id}/chapters |
+| GET    | /api/books/{id}/chapters |
+| PUT    | /api/chapters/{id}       |
+| DELETE | /api/chapters/{id}       |
+
+### Pages
+
+| Method | Endpoint                 |
+| ------ | ------------------------ |
+| POST   | /api/chapters/{id}/pages |
+| GET    | /api/chapters/{id}/pages |
+| PUT    | /api/pages/{id}          |
+| DELETE | /api/pages/{id}          |
+
+### Versions
+
+| Method | Endpoint                             |
+| ------ | ------------------------------------ |
+| POST   | /api/books/{id}/versions             |
+| GET    | /api/books/{id}/versions             |
+| GET    | /api/books/{id}/versions/{versionId} |
+
+### Workflow
+
+| Method | Endpoint                |
+| ------ | ----------------------- |
+| POST   | /api/books/{id}/submit  |
+| POST   | /api/books/{id}/approve |
+| POST   | /api/books/{id}/reject  |
+| POST   | /api/books/{id}/publish |
+
+### Upload
+
+| Method | Endpoint               |
+| ------ | ---------------------- |
+| POST   | /api/books/{id}/upload |
+
+### Dashboard
+
+| Method | Endpoint       |
+| ------ | -------------- |
+| GET    | /api/dashboard |
+
+---
+
+## Assumptions & Trade-offs
+
+* Document conversion is implemented using PhpWord.
+* Uploaded documents are converted into HTML page content using text chunking.
+* Moderation is implemented using restricted word matching.
+* A single imported chapter is created for uploaded manuscripts.
+* Focus was placed on clean architecture and maintainable code rather than production-level optimization.
+
+---
+
+## Future Improvements
+
+* Queue-based document processing
+* Redis caching
+* Email notifications
+* OpenAI-generated summaries
+* Advanced profanity detection
+* Full-text search
+* Background moderation jobs
