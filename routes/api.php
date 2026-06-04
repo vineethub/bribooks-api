@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\ChapterController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -24,6 +25,12 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{book}/reject', 'reject');
         Route::get('/{book}/versions', 'versions');
         Route::get('/{book}/versions/{version}','showVersion');
+        Route::post('{id}/chapters', [ChapterController::class, 'store']);
+        Route::get('{id}/chapters', [ChapterController::class, 'index']);
     });
+
+    
+    Route::put('/chapters/{id}', [ChapterController::class, 'update']);
+    Route::delete('/chapters/{id}', [ChapterController::class, 'destroy']);
 
 });

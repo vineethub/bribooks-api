@@ -31,4 +31,9 @@ class Book extends Model
     {
         return $this->hasMany(BookVersion::class);
     }
+
+    public function chapters()
+    {
+        return $this->hasMany(Chapter::class);
+    }
 }
