@@ -21,8 +21,26 @@ class ModerationListener
      */
     public function handle(BookSubmitted $event): void
     {
-        logger()->info('Notification Event', [
-            'event' => get_class($event),
-        ]);
+        $book = $event->book;
+
+        $result = app(ModerationService::class)
+            ->check($book);
+
+        if ($result['passed']) {
+
+            $book->update([
+                'status' => BookStatus::UNDER_REVIEW
+            ]);
+
+            event(new ModerationPassed($book));
+
+        } else {
+
+            ModerationLog::create([
+                'book_id' => $book->id,
+                'status' => 'failed',
+                'remarks' => implode(', ', $result['words']),
+            ]);
+        }
     }
 }
