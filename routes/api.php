@@ -28,9 +28,11 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{book}/reject', 'reject');
         Route::get('/{book}/versions', 'versions');
         Route::get('/{book}/versions/{version}','showVersion');
+        Route::post('/{book}/versions/{version}','store');
         Route::post('{id}/chapters', [ChapterController::class, 'store']);
         Route::get('{id}/chapters', [ChapterController::class, 'index']);
     });
+
 
     
         Route::put('/chapters/{id}', [ChapterController::class, 'update']);
