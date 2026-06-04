@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\ChapterController;
 use App\Http\Controllers\Api\PageController;
+use App\Http\Controllers\Api\DashboardController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -39,5 +40,8 @@ Route::middleware('auth:api')->group(function () {
 
         Route::put('/pages/{id}', [PageController::class, 'update']);
         Route::delete('/pages/{id}', [PageController::class, 'destroy']);
+
+        // dashboard API
+        Route::get('/dashboard', [DashboardController::class, 'index']);
 
 });
